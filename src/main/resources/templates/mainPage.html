@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <#assign ctx = request.contextPath />
+    <title>音频主页面</title>
+ <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/angular.js/1.4.6/angular.min.js"></script>
+</head>
+<script src="${ctx}/static/regUser.js"></script>
+
+<body class="container">
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">微学习系统</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span> <button type="button" class="btn btn-link"  data-toggle="modal" data-target="#myModal">注册</button></a></li>
+            <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#loginModel">登录</button></a></li>
+        </ul>
+    </div>
+</nav>
+<div ng-app="myApp" ng-controller="siteCtrl">
+
+  {{aa}}
+
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('siteCtrl', function($scope, $http) {
+        $http.get("")
+            .then(function (response) {$scope.names = response.data.sites;});
+    });
+</script>
+
+<!-- 注册模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="myModalLabel">注册</h2>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data" action="" id="reg">
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">用户名</label>
+                        <div class="col-sm-10" id="nameDiv">
+                            <input type="text" class="form-control" id="name" name="userName"  placeholder="请输入用户名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-10" id="passwordDiv">
+                            <input type="password" class="form-control" id="password" name="password"
+                                   placeholder="请输入密码">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-2 control-label">邮箱</label>
+                        <div class="col-sm-10" id="emailDiv">
+                            <input type="text" class="form-control" name="email" id="email"
+                                   placeholder="请输入邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-2 control-label">头像</label>
+                        <div class="col-sm-10" id="headDiv">
+                            <input type="file" class="form-control" name="file"  id="head">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="regbut">提交</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+
+
+
+<!-- 登录模态框（Modal） -->
+<div class="modal fade" id="loginModel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title" id="loginModelLabel">登录</h2>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data" action="" id="reg">
+                    <div class="form-group">
+                        <label for="firstname" class="col-sm-2 control-label">用户名</label>
+                        <div class="col-sm-10" id="nameDiv1">
+                            <input type="text" class="form-control name" name="userName" id="loginname" placeholder="请输入用户名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-10 passwordDiv">
+                            <input type="password" class="form-control" name="password" id="loginpassword"
+                                   placeholder="请输入密码">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="loginbut">提交</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+
+
+
+
+<!-- 分页条 -->
+<div class="row">
+    <div class="col-md-6">共有{{pageInfo.total}}条数据,共有{{pageInfo.pages}}页</div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li ng-show="pageInfo.hasPreviousPage"><a href="#" ng-click="toPage(1)">首页</a></li>
+            <li ng-hide="pageInfo.hasPreviousPage" class="disabled"><a href="#" >首页</a></li>
+            <li>
+                <a ng-show="pageInfo.hasPreviousPage" href="#" ng-click="toPage(pageInfo.pageNum-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li>
+                <a ng-hide="pageInfo.hasPreviousPage" href="#"  aria-label="Previous" class="disabled">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li ng-repeat="num in pageInfo.navigatepageNums" ng-class="num==pageInfo.pageNum?'active':''">
+                <a href="#" ng-click="toPage(num)">{{num}}</a>
+            </li>
+            <li>
+                <a href="#" ng-click="toPage(pageInfo.pageNum+1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li><a href="#" ng-click="toPage(pageInfo.pages)">尾页</a></li>
+        </ul>
+    </nav>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

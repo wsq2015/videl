@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.group4.dao.CollectionMapper">
+    <insert id="collectionredio" parameterType="tcollection">
+         insert into t_collection(t_userid,t_videlid)value(#{t_userid},#{t_videlid})
+
+    </insert>
+    <insert id="commentredio" parameterType="tcomment">
+          insert into t_comment(t_userId,t_videlId,t_commentInfo,t_commentTime)
+          value(#{t_userId},#{t_videlId},#{t_commentInfo},#{t_commentTime})
+
+    </insert>
+
+</mapper>

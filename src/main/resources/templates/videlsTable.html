@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="<%=basePath%>">
+    <meta charset="utf-8">
+    <title>艾米音乐注册页面</title>
+    <link rel="stylesheet" type="text/css" href="/static/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <script src="/static/js/jquery-3.2.1.js"></script>
+    <script src="/static/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+
+    <script type="text/javascript">
+        var myApp = angular.module("app",[]);
+        myApp.controller("controllers",["$scope","$http",function($scope,$http){
+            $scope.toPage = function (num) {
+                $http({
+                    method: "post",
+                    url: "week_study/selectBypageHelper?pageNo="+num,
+                    dataType:"json"
+                }).then(function successCallback(response) {
+                    // 请求成功执行代码
+                    $scope.datas = response.data.pageInfo;
+                    $scope.videl = $scope.datas.list;
+
+                }, function errorCallback(response) {
+                    // 请求失败执行代码
+                });
+
+            };
+
+        }]);
+
+
+
+        $(".toSelect").click(function () {
+            $.ajax({
+                url:"toSelect",
+                dataType:"json",
+                method:"post",
+                success:function (data) {
+                    $("")
+                }
+            });
+            //修改用户信息的模态框
+            $("#toUpdate").modal("show");
+        });
+    </script>
+</head>
+<body>
+<img src="/static/img/yu.jpg" id="imgs" border-radius:50% class="img-responsive" alt="Cinque Terre">
+<button type="button" class="btn btn-info toSelect">${selectByNameAndPE}</button>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid col-xs-6 col-md-offset-3">
+        <div class="navbar-header">
+            音频id
+            游客没有头像及基本信息，如果游客登录，用户头像和基本信息隐藏,
+            如果管理员登录（和普通用户一样），可修改自己的基本信息，
+            作者id（用户名称,点击用户可查询用户基本信息,可修改）
+            音频标题(中间)      angularjs 根据姓名查询 登录用户请求页面刷新自己的列表清单
+            游客登录，管理员登录加载全部,分页查询
+            内容简介（所属标题下部显示）
+            标签（可做成表，以标签内容切换，音乐列表分类）
+            音频的时长（进度条下部显示）
+            发布时间（上部显示）
+            播放数（右上方显示）
+            收藏数（播放数左部）
+            评论数（下方，可查看）
+            举报次数（不可看，是一个按钮触发一个文本框）
+            存放路径（下载按钮，用户页面隐藏该按钮）
+            音频状态（||正在播放>|展停切换>>）
+        </div>
+    </div>
+</nav>
+<div class="col-xs-6 col-md-offset-3" ng-app="myApp" ng-controller="controllers">
+
+
+    <!--修改用的模态框-->
+    <div class="modal fade" id="toUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">${selectByNameAndPE}</h4>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control names" name="tUsername"
+                               placeholder="姓名" ng-blur="nameTest()">
+                        <span id="span1"></span>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control tEmail" name="tEmail"
+                               placeholder="用户邮箱" ng-readonly="true">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control tSigntime" name="tSigntime"
+                               placeholder="注册时间" ng-readonly="true">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control tSole" name="tSole"
+                               placeholder="用户角色" ng-readonly="true">
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">提交更改</button>
+                    </div>
+
+                </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal -->
+
+</div>
+
+</div>
+
+<!--音频主页面-->
+
+<table class="table">
+    <caption>本地歌曲</caption>
+    <thead>
+    <tr>
+        <th>歌名称</th>
+        <th>上传人</th>
+        <th>类型</th>
+        <th>时长</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="videls in videl ">
+        <th>{{videls.tVideltitel}}</th>
+        <th>{{}}</th>
+        <th>{{}}</th>
+        <th>{{}}</th>
+
+    </tr>
+    </tbody>
+</table>
+
+
+
+
+
+
+<!-- 分页条 -->
+<div class="row">
+    <div class="col-md-6">共有{{pageInfo.total}}条数据,共有{{pageInfo.pages}}页</div>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li ng-show="pageInfo.hasPreviousPage"><a  ng-click="toPage(1)">首页</a></li>
+            <li ng-hide="pageInfo.hasPreviousPage" class="disabled"><a href="#" >首页</a></li>
+            <li>
+                <a ng-show="pageInfo.hasPreviousPage" href="#" ng-click="toPage(pageInfo.pageNum-1)" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li>
+                <a ng-hide="pageInfo.hasPreviousPage" href="#"  aria-label="Previous" class="disabled">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li ng-repeat="num in pageInfo.navigatepageNums" ng-class="num==pageInfo.pageNum?'active':''">
+                <a href="#" ng-click="toPage(num)">{{num}}</a>
+            </li>
+            <li>
+                <a href="#" ng-click="toPage(pageInfo.pageNum+1)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li><a href="#" ng-click="toPage(pageInfo.pages)">尾页</a></li>
+        </ul>
+    </nav>
+</div>
+
+</div>
+</body>
+
+</html>
